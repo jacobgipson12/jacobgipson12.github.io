@@ -4,5 +4,7 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "About me"
+      href: About-me.html
     - text: "Iris"
       href: Iris.html

@@ -11,9 +11,9 @@
 
 <meta name="author" content="Jacob Gipson" />
 
-<meta name="date" content="2021-11-10" />
+<meta name="date" content="2021-08-22" />
 
-<title>Jacob’s Website</title>
+<title>Unit 1 Iris</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -291,17 +291,23 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Jacob’s Website</h1>
+<h1 class="title toc-ignore">Unit 1 Iris</h1>
 <h4 class="author">Jacob Gipson</h4>
-<h4 class="date">11/10/2021</h4>
+<h4 class="date">08/22/2021</h4>
 
 </div>
 
 
-<div id="jacobs-website" class="section level1">
-<h1>Jacob’s Website</h1>
-<div id="this-will-be-used-to-display-jacobs-projects" class="section level2">
-<h2>This will be used to display Jacob’s Projects</h2>
+<div id="iris-data" class="section level1">
+<h1>Iris Data</h1>
+<div id="summary-of-sepal-length" class="section level2">
+<h2>Summary of Sepal Length</h2>
+<pre class="r"><code>#summary of the Iris data
+summary(iris$Sepal.Length)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   4.300   5.100   5.800   5.843   6.400   7.900</code></pre>
+<pre class="r"><code>hist(iris$Sepal.Length, col = &quot;blue&quot;, main = &quot;histogram of Sepal Length&quot;)</code></pre>
+<p><img src="Iris_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 </div>
 

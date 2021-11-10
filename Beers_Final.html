@@ -282,7 +282,7 @@ $(document).ready(function () {
   <a href="Iris.html">Iris</a>
 </li>
 <li>
-  <a href="Beers_final.html">Beers</a>
+  <a href="Beers_Final.html">Beers</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -318,21 +318,10 @@ breweries = read.csv(&quot;/Users/jacobgipson/Documents/SMU/Doing Data science/B
 <h3>Question 1: How many breweries are in each state?</h3>
 <div id="we-created-a-table-and-a-corresponding-bar-chart-to-visualize-the-number-of-individual-breweries-in-each-state." class="section level5">
 <h5>We created a table and a corresponding bar chart to visualize the number of individual breweries in each state.</h5>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>library(ggthemes)</code></pre>
-<pre><code>## Warning: package &#39;ggthemes&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(RColorBrewer)
+<pre class="r"><code>library(ggplot2)
+library(ggthemes)
+library(dplyr)
+library(RColorBrewer)
 ####This creates a custom color palette
 
   # Classic palette BuPu, with 4 colors
@@ -453,17 +442,8 @@ head(fullbeer, n = 6)</code></pre>
 <h3>Question 3: Address the missing values in each column.</h3>
 <div id="we-filled-in-missing-abv-and-ibu-values-with-averages-for-the-beers-style.-other-missing-values-required-a-little-more-due-diligence-which-we-have-outlined-below." class="section level5">
 <h5>We filled in missing ABV and IBU values with averages for the beer’s style. Other missing values required a little more due diligence which we have outlined below.</h5>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ tibble  3.1.5     ✓ purrr   0.3.4
-## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>#Number of missing ABV values
+<pre class="r"><code>library(tidyverse)
+#Number of missing ABV values
 sum(is.na(fullbeer$ABV))</code></pre>
 <pre><code>## [1] 62</code></pre>
 <pre class="r"><code>#Number of missing IBU values
@@ -634,16 +614,8 @@ fullbeer %&gt;%
 <h3>Question 7: Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. Make your best judgment of a relationship and EXPLAIN your answer.</h3>
 <div id="we-conclude-that-there-is-a-moderate-correlation-between-the-bitterness-and-alcoholic-content-of-a-beer.-in-general-we-do-see-as-abv-increases-ibu-increases.-there-are-exceptions-to-the-rule-but-our-data-shows-this-trend." class="section level5">
 <h5>We conclude that there is a moderate correlation between the bitterness and alcoholic content of a beer. In general, we do see as ABV increases, IBU increases. There are exceptions to the rule, but our data shows this trend.</h5>
-<pre class="r"><code>library(ggpmisc)</code></pre>
-<pre><code>## Warning: package &#39;ggpmisc&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## Loading required package: ggpp</code></pre>
-<pre><code>## Warning: package &#39;ggpp&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## 
-## Attaching package: &#39;ggpp&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     annotate</code></pre>
-<pre class="r"><code>my.formula = y ~ x
+<pre class="r"><code>library(ggpmisc)
+my.formula = y ~ x
 fullbeer %&gt;%
   ggplot(aes(x=ABV,y=IBU))+
   geom_point(position = &quot;jitter&quot;) +
@@ -664,17 +636,10 @@ fullbeer %&gt;%
 <h3>Question 8: Use KNN classification to investigate the difference between IPAs and other types of Ales with respect to IBU and ABV.</h3>
 <div id="we-were-able-to-tune-our-external-crossvalidation-model-to-have-relatively-high-accuracy-sensitivity-and-specificity-in-predicting-whether-a-beer-was-an-ale-or-an-ipa-just-by-using-abv-and-ibu.-this-indicates-that-in-general-there-may-be-a-difference-in-the-abv-and-ibu-distributions-of-ales-and-ipas." class="section level4">
 <h4>We were able to tune our external crossvalidation model to have relatively high accuracy, sensitivity, and specificity in predicting whether a beer was an Ale or an IPA just by using ABV and IBU. This indicates that, in general, there may be a difference in the ABV and IBU distributions of Ales and IPA’s.</h4>
-<pre class="r"><code>library(class)</code></pre>
-<pre><code>## Warning: package &#39;class&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>library(caret)</code></pre>
-<pre><code>## Warning: package &#39;caret&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## 
-## Attaching package: &#39;caret&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     lift</code></pre>
-<pre class="r"><code>#First we pull all the beers that are IPA&#39;s or have Ale in the name
+<pre class="r"><code>library(class)
+library(caret)
+
+#First we pull all the beers that are IPA&#39;s or have Ale in the name
 IPAsandAles&lt;-fullbeer[grepl(&quot;IPA|Ale&quot;,fullbeer$Style),]
 
 #Then we split the data into 2 groups: IPA&#39;s and Ales
@@ -839,9 +804,8 @@ confusionMatrix(table(classifications,validate$Class))</code></pre>
 ## </code></pre>
 <p>###Exploring a Naive Bayes model ##### We tried to use the Naive Bayes approach to see how it performed. We had our reservations because the Naive Bayes method assumes that the predicting variables have a normal distribution. As shown previously, both the ABV and IBU variables are skewed to the right. We tried it anyway, and found that the Naive-Bayes model seems to be robust to non-normality in this situation. This may be cool to explore later on.</p>
 <pre class="r"><code>##Naive Bayes Exploration
-library(e1071)</code></pre>
-<pre><code>## Warning: package &#39;e1071&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>model = naiveBayes(Class~ABV+IBU,data = train)
+library(e1071)
+model = naiveBayes(Class~ABV+IBU,data = train)
 confusionMatrix(table(predict(model,validate[,c(1,2)]),as.factor(validate$Class)))</code></pre>
 <pre><code>## Confusion Matrix and Statistics
 ## 

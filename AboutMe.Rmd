@@ -1,0 +1,17 @@
+---
+title: "About Me"
+author: "Jacob Gipson"
+date: "11/10/2021"
+output: html_document
+---
+
+
+#### I am from San Jose, CA.
+#### I work as a Scientist at Thermo Fisher Scientific.
+#### I graduated from Oregon State University in 2017 with a degree in Chemical Engineering. 
+
+
+
+
+
+### Please explore the other tabs to see other data science projects that I have completed.

@@ -8,3 +8,5 @@ navbar:
       href: AboutMe.html
     - text: "Iris"
       href: Iris.html
+    - text: "Beers"
+      href: Beers_final.html

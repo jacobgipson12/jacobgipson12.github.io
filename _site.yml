@@ -5,6 +5,6 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "About me"
-      href: About-me.html
+      href: AboutMe.html
     - text: "Iris"
       href: Iris.html

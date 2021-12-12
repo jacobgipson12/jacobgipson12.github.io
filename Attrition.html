@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Joaquin Dominguez" />
+<meta name="author" content="Joaquin Dominguez and Jacob Gipson" />
 
 <meta name="date" content="2021-11-29" />
 
@@ -285,6 +285,10 @@ $(document).ready(function () {
 <li>
   <a href="Beers_Final.html">Beers</a>
 </li>
+<li>
+  <a href="Attrition.html">Attrition</a>
+</li>
+<li class="dropdown-header">Coming Soon</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -298,12 +302,13 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Case Study 2</h1>
-<h4 class="author">Joaquin Dominguez</h4>
+<h4 class="author">Joaquin Dominguez and Jacob Gipson</h4>
 <h4 class="date">11/29/2021</h4>
 
 </div>
 
 
+<p><a href="https://zoom.us/rec/play/It9fIKJJSuLo4JFwtQMT1_YC5Z3cu_rbYO1Iq-kVIZ7MEbpGmz_fURg9QnO-7ArZEIZxR-QMZhkrRgib.Wgc15poS-elGSmET?startTime=1639268101000">Presentation Link</a></p>
 <div id="load-libraries" class="section level3">
 <h3>Load libraries</h3>
 <pre class="r"><code>library(tidyverse)</code></pre>
@@ -1580,7 +1585,7 @@ get_model_formula(15, models, &quot;monthly_income&quot;)</code></pre>
 ##     job_roleresearch_director + job_roleresearch_scientist + 
 ##     job_rolesales_executive + monthly_rate + total_working_years + 
 ##     years_since_last_promotion + years_with_curr_manager
-## &lt;environment: 0x7fd68c862460&gt;</code></pre>
+## &lt;environment: 0x7fbddaa6ae98&gt;</code></pre>
 <pre class="r"><code>### using that output, we create this linear model to compare with the rest of the models
 leaps_mod_2 &lt;- lm(monthly_income ~ business_travel + daily_rate + department + gender
                     + job_level + job_role + job_role  + 

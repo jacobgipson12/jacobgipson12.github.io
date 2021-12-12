@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Joaquin Dominguez and Jacob Gipson" />
+
+<meta name="date" content="2021-11-29" />
+
+<title>Case Study 2</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="AboutMe.html">About me</a>
+</li>
+<li>
+  <a href="Iris.html">Iris</a>
+</li>
+<li>
+  <a href="Beers_Final.html">Beers</a>
+</li>
+<li>
+  <a href="Attrition.html">Attrition</a>
+</li>
+<li class="dropdown-header">Coming Son</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Case Study 2</h1>
+<h4 class="author">Joaquin Dominguez and Jacob Gipson</h4>
+<h4 class="date">11/29/2021</h4>
+
+</div>
+
+
+<p><a href="https://zoom.us/rec/play/It9fIKJJSuLo4JFwtQMT1_YC5Z3cu_rbYO1Iq-kVIZ7MEbpGmz_fURg9QnO-7ArZEIZxR-QMZhkrRgib.Wgc15poS-elGSmET?startTime=1639268101000">Presentation Link</a></p>
+<div id="load-libraries" class="section level3">
+<h3>Load libraries</h3>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(janitor)</code></pre>
+<pre><code>## Warning: package &#39;janitor&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(arules)</code></pre>
+<pre><code>## Warning: package &#39;arules&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(aod)</code></pre>
+<pre><code>## Warning: package &#39;aod&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(AICcmodavg)</code></pre>
+<pre><code>## Warning: package &#39;AICcmodavg&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(dplyr)
+library(class)</code></pre>
+<pre><code>## Warning: package &#39;class&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>## Warning: package &#39;caret&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(e1071)</code></pre>
+<pre><code>## Warning: package &#39;e1071&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(olsrr)</code></pre>
+<pre><code>## Warning: package &#39;olsrr&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(leaps)</code></pre>
+<pre><code>## Warning: package &#39;leaps&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>library(tibble)
+work &lt;- read_csv(&quot;https://raw.githubusercontent.com/j-dominguez9/Case-Study-2/main/Code/Data/CaseStudy2-data.csv&quot;)
+head(work)</code></pre>
+<pre><code>## # A tibble: 6 × 36
+##      ID   Age Attrition BusinessTravel    DailyRate Department  DistanceFromHome
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt;
+## 1     1    32 No        Travel_Rarely           117 Sales                     13
+## 2     2    40 No        Travel_Rarely          1308 Research &amp;…               14
+## 3     3    35 No        Travel_Frequently       200 Research &amp;…               18
+## 4     4    32 No        Travel_Rarely           801 Sales                      1
+## 5     5    24 No        Travel_Frequently       567 Research &amp;…                2
+## 6     6    27 No        Travel_Frequently       294 Research &amp;…               10
+## # … with 29 more variables: Education &lt;dbl&gt;, EducationField &lt;chr&gt;,
+## #   EmployeeCount &lt;dbl&gt;, EmployeeNumber &lt;dbl&gt;, EnvironmentSatisfaction &lt;dbl&gt;,
+## #   Gender &lt;chr&gt;, HourlyRate &lt;dbl&gt;, JobInvolvement &lt;dbl&gt;, JobLevel &lt;dbl&gt;,
+## #   JobRole &lt;chr&gt;, JobSatisfaction &lt;dbl&gt;, MaritalStatus &lt;chr&gt;,
+## #   MonthlyIncome &lt;dbl&gt;, MonthlyRate &lt;dbl&gt;, NumCompaniesWorked &lt;dbl&gt;,
+## #   Over18 &lt;chr&gt;, OverTime &lt;chr&gt;, PercentSalaryHike &lt;dbl&gt;,
+## #   PerformanceRating &lt;dbl&gt;, RelationshipSatisfaction &lt;dbl&gt;, …</code></pre>
+</div>
+<div id="cleaning-data" class="section level3">
+<h3>Cleaning Data:</h3>
+<div id="remove-columns-that-have-no-practical-association-with-attrition-and-monthly-income" class="section level4">
+<h4>- remove columns that have no practical association with attrition and monthly income<br />
+</h4>
+</div>
+<div id="change-attrition-values-to-0-and-1" class="section level4">
+<h4>- change attrition values to 0 and 1<br />
+</h4>
+</div>
+<div id="recode-factor-levels-with-snake-case-names" class="section level4">
+<h4>- recode factor levels with snake case names<br />
+</h4>
+<pre class="r"><code>work &lt;- work %&gt;% janitor::clean_names()
+work$employee_count &lt;- NULL
+work$over18 &lt;- NULL
+work$standard_hours &lt;- NULL
+work$id &lt;- NULL
+work$employee_number &lt;- NULL
+work &lt;- work %&gt;% mutate(attrition = if_else(attrition == &quot;No&quot;, 0, 1))
+head(work)</code></pre>
+<pre><code>## # A tibble: 6 × 31
+##     age attrition business_travel   daily_rate department             distance_from_h…
+##   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt;                             &lt;dbl&gt;
+## 1    32         0 Travel_Rarely            117 Sales                                13
+## 2    40         0 Travel_Rarely           1308 Research &amp; Development               14
+## 3    35         0 Travel_Frequently        200 Research &amp; Development               18
+## 4    32         0 Travel_Rarely            801 Sales                                 1
+## 5    24         0 Travel_Frequently        567 Research &amp; Development                2
+## 6    27         0 Travel_Frequently        294 Research &amp; Development               10
+## # … with 25 more variables: education &lt;dbl&gt;, education_field &lt;chr&gt;,
+## #   environment_satisfaction &lt;dbl&gt;, gender &lt;chr&gt;, hourly_rate &lt;dbl&gt;,
+## #   job_involvement &lt;dbl&gt;, job_level &lt;dbl&gt;, job_role &lt;chr&gt;,
+## #   job_satisfaction &lt;dbl&gt;, marital_status &lt;chr&gt;, monthly_income &lt;dbl&gt;,
+## #   monthly_rate &lt;dbl&gt;, num_companies_worked &lt;dbl&gt;, over_time &lt;chr&gt;,
+## #   percent_salary_hike &lt;dbl&gt;, performance_rating &lt;dbl&gt;,
+## #   relationship_satisfaction &lt;dbl&gt;, stock_option_level &lt;dbl&gt;, …</code></pre>
+<pre class="r"><code>work$department &lt;- as.factor(work$department)
+work$education_field &lt;- as.factor(work$education_field)
+work$gender &lt;- as.factor(work$gender)
+work$marital_status &lt;- as.factor(work$marital_status)
+work$over_time &lt;- as.factor(work$over_time)
+
+levels(work$education_field)</code></pre>
+<pre><code>## [1] &quot;Human Resources&quot;  &quot;Life Sciences&quot;    &quot;Marketing&quot;        &quot;Medical&quot;         
+## [5] &quot;Other&quot;            &quot;Technical Degree&quot;</code></pre>
+<pre class="r"><code>work$education_field &lt;- recode_factor(work$education_field,&quot;Human Resources&quot; = &#39;human_resources&#39;,&quot;Marketing&quot; = &#39;marketing&#39;, &quot;Medical&quot; = &#39;medical&#39;,&quot;Other&quot; = &#39;other&#39;, &quot;Technical Degree&quot; = &#39;technical_degree&#39;, &quot;Life Sciences&quot; = &#39;life_sciences&#39;)
+levels(work$education_field)</code></pre>
+<pre><code>## [1] &quot;human_resources&quot;  &quot;marketing&quot;        &quot;medical&quot;          &quot;other&quot;           
+## [5] &quot;technical_degree&quot; &quot;life_sciences&quot;</code></pre>
+<pre class="r"><code>levels(work$department)</code></pre>
+<pre><code>## [1] &quot;Human Resources&quot;        &quot;Research &amp; Development&quot; &quot;Sales&quot;</code></pre>
+<pre class="r"><code>work$department &lt;- recode_factor(work$department, &quot;Human Resources&quot; = &#39;human_resources&#39;, &quot;Research &amp; Development&quot; = &#39;research_and_development&#39;, &quot;Sales&quot; = &#39;sales&#39;)
+levels(work$job_role)</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>work$job_role &lt;- recode_factor(work$job_role, &quot;Healthcare Representative&quot; = &#39;healthcare_representative&#39;, &quot;Human Resources&quot; = &#39;human_resources&#39;, &quot;Laboratory Technician&quot; = &#39;laboratory_technician&#39;, &quot;Manager&quot; = &#39;manager&#39;, &quot;Manufacturing Director&quot; = &#39;manufacturing_director&#39;, &quot;Research Director&quot; = &#39;research_director&#39;, &quot;Research Scientist&quot; = &#39;research_scientist&#39;, &quot;Sales Executive&quot; = &#39;sales_executive&#39;, &quot;Sales Representative&quot; = &#39;sales_representative&#39;)</code></pre>
+</div>
+</div>
+<div id="exploratory-data-analysis" class="section level3">
+<h3>Exploratory Data Analysis</h3>
+<div id="create-graphs-for-each-variable-against-attrition" class="section level4">
+<h4>- Create graphs for each variable against attrition</h4>
+</div>
+<div id="divide-into-internal-and-external-variables" class="section level4">
+<h4>- Divide into “internal” and “external” variables</h4>
+</div>
+<div id="set-30-attrition-rate-for-a-level-of-a-variable-as-significant" class="section level4">
+<h4>- Set 30% attrition rate for a level of a variable as significant</h4>
+<pre class="r"><code>### External, not significant
+
+total &lt;- work %&gt;% select(education_field, attrition) %&gt;% 
+  group_by(education_field) %&gt;% arrange(education_field) %&gt;% 
+  dplyr::count(education_field) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(education_field, attrition) %&gt;% 
+  group_by(education_field) %&gt;% arrange(education_field) %&gt;% 
+  filter(attrition == &quot;1&quot;) %&gt;% dplyr::count(education_field) %&gt;%
+  dplyr::rename(yes = n) %&gt;% as.data.frame()
+
+head(yes_count)</code></pre>
+<pre><code>##    education_field yes
+## 1  human_resources   4
+## 2        marketing  20
+## 3          medical  37
+## 4            other   9
+## 5 technical_degree  17
+## 6    life_sciences  53</code></pre>
+<pre class="r"><code>head(total)</code></pre>
+<pre><code>##    education_field   n
+## 1  human_resources  15
+## 2        marketing 100
+## 3          medical 270
+## 4            other  52
+## 5 technical_degree  75
+## 6    life_sciences 358</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;education_field&quot;) %&gt;% mutate(perc = (yes/n)*100)
+join$education_field &lt;- as.factor(join$education_field)
+head(join)</code></pre>
+<pre><code>##    education_field   n yes     perc
+## 1  human_resources  15   4 26.66667
+## 2        marketing 100  20 20.00000
+## 3          medical 270  37 13.70370
+## 4            other  52   9 17.30769
+## 5 technical_degree  75  17 22.66667
+## 6    life_sciences 358  53 14.80447</code></pre>
+<pre class="r"><code>join %&gt;% ggplot(aes(x = education_field, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Education Field and Attrition&quot;) +  labs(x = &quot;Education Field&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/education%20field-1.png" width="672" /></p>
+<pre class="r"><code>### external, significant
+total &lt;- work %&gt;% mutate(age = discretize(age, method = &#39;interval&#39;, breaks = 6)) %&gt;% select(age, attrition) %&gt;% group_by(age) %&gt;% arrange(age) %&gt;% dplyr::count(age) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% mutate(age = discretize(age, method = &#39;interval&#39;, breaks = 6)) %&gt;% select(age, attrition) %&gt;% group_by(age) %&gt;% arrange(age) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% dplyr::count(age) %&gt;% dplyr::rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##       age   n
+## 1 [18,25)  55
+## 2 [25,32) 206
+## 3 [32,39) 287
+## 4 [39,46) 165
+## 5 [46,53) 103
+## 6 [53,60]  54</code></pre>
+<pre class="r"><code>head(yes_count)</code></pre>
+<pre><code>##       age yes
+## 1 [18,25)  20
+## 2 [25,32)  47
+## 3 [32,39)  36
+## 4 [39,46)  17
+## 5 [46,53)  13
+## 6 [53,60]   7</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;age&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = age, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Age and Attrition&quot;) + labs(x = &quot;Age&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/age-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, business_travel) %&gt;% group_by(business_travel) %&gt;% arrange(business_travel) %&gt;% count(business_travel) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(business_travel, attrition) %&gt;% group_by(business_travel) %&gt;% arrange(business_travel) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(business_travel) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##     business_travel   n
+## 1        Non-Travel  94
+## 2 Travel_Frequently 158
+## 3     Travel_Rarely 618</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##     business_travel yes
+## 1        Non-Travel  11
+## 2 Travel_Frequently  35
+## 3     Travel_Rarely  94</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;business_travel&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = business_travel, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Business Travel and Attrition&quot;) + labs(x = &quot;Business Travel&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/business%20travel-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, department) %&gt;% group_by(department) %&gt;% arrange(department) %&gt;% count(department) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(department, attrition) %&gt;% group_by(department) %&gt;% arrange(department) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(department) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##                 department   n
+## 1          human_resources  35
+## 2 research_and_development 562
+## 3                    sales 273</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##                 department yes
+## 1          human_resources   6
+## 2 research_and_development  75
+## 3                    sales  59</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;department&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = department, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Department and Attrition&quot;) + labs(x = &quot;Department&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/department-1.png" width="672" /></p>
+<pre class="r"><code>### external, significant
+total &lt;- work %&gt;% select(attrition, distance_from_home) %&gt;% mutate(distance_from_home = discretize(distance_from_home, method = &#39;interval&#39;, breaks = 6)) %&gt;% group_by(distance_from_home) %&gt;% arrange(distance_from_home) %&gt;% dplyr::count(distance_from_home) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(distance_from_home, attrition) %&gt;% mutate(distance_from_home = discretize(distance_from_home, method = &#39;interval&#39;, breaks = 6)) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% group_by(distance_from_home) %&gt;% arrange(distance_from_home) %&gt;% dplyr::count(distance_from_home) %&gt;% dplyr::rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   distance_from_home   n
+## 1           [1,5.67) 367
+## 2        [5.67,10.3) 233
+## 3          [10.3,15)  53
+## 4          [15,19.7)  78
+## 5        [19.7,24.3)  74
+## 6          [24.3,29]  65</code></pre>
+<pre class="r"><code>head(yes_count)</code></pre>
+<pre><code>##   distance_from_home yes
+## 1           [1,5.67)  52
+## 2        [5.67,10.3)  30
+## 3          [10.3,15)  12
+## 4          [15,19.7)  13
+## 5        [19.7,24.3)  24
+## 6          [24.3,29]   9</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;distance_from_home&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = distance_from_home, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Distance From Home and Attrition&quot;) + labs(x = &quot;Distance from Home&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/distance%20from%20home-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, education) %&gt;% group_by(education) %&gt;% arrange(education) %&gt;% count(education) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(education, attrition) %&gt;% group_by(education) %&gt;% arrange(education) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(education) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   education   n
+## 1         1  98
+## 2         2 182
+## 3         3 324
+## 4         4 240
+## 5         5  26</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   education yes
+## 1         1  18
+## 2         2  32
+## 3         3  55
+## 4         4  32
+## 5         5   3</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;education&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = education, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Education and Attrition&quot;) + labs(x = &quot;Education&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/education-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, environment_satisfaction) %&gt;% group_by(environment_satisfaction) %&gt;% arrange(environment_satisfaction) %&gt;% count(environment_satisfaction) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(environment_satisfaction, attrition) %&gt;% group_by(environment_satisfaction) %&gt;% arrange(environment_satisfaction) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(environment_satisfaction) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   environment_satisfaction   n
+## 1                        1 172
+## 2                        2 178
+## 3                        3 258
+## 4                        4 262</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   environment_satisfaction yes
+## 1                        1  42
+## 2                        2  24
+## 3                        3  35
+## 4                        4  39</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;environment_satisfaction&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = environment_satisfaction, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Environment Satisfaction and Attrition&quot;) + labs(x = &quot;Environment Satisfaction&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/environment%20satisfaction-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, gender) %&gt;% group_by(gender) %&gt;% arrange(gender) %&gt;% count(gender) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(gender, attrition) %&gt;% group_by(gender) %&gt;% arrange(gender) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(gender) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   gender   n
+## 1 Female 354
+## 2   Male 516</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   gender yes
+## 1 Female  53
+## 2   Male  87</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;gender&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = gender, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Gender and Attrition&quot;) + labs(x = &quot;Gender&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/gender-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, hourly_rate) %&gt;% mutate(hourly_rate = discretize(hourly_rate, method = &#39;interval&#39;, breaks = 10)) %&gt;% group_by(hourly_rate) %&gt;% arrange(hourly_rate) %&gt;% count(hourly_rate) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(hourly_rate, attrition) %&gt;% mutate(hourly_rate = discretize(hourly_rate, method = &#39;interval&#39;, breaks = 10)) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% group_by(hourly_rate) %&gt;% arrange(hourly_rate) %&gt;% count(hourly_rate) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   hourly_rate   n
+## 1     [30,37)  69
+## 2     [37,44)  87
+## 3     [44,51)  88
+## 4     [51,58) 102
+## 5     [58,65)  79
+## 6     [65,72)  73</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##    hourly_rate yes
+## 1      [30,37)  10
+## 2      [37,44)  10
+## 3      [44,51)  14
+## 4      [51,58)  15
+## 5      [58,65)  11
+## 6      [65,72)  20
+## 7      [72,79)  13
+## 8      [79,86)  18
+## 9      [86,93)  10
+## 10    [93,100]  19</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;hourly_rate&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = hourly_rate, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Hourly Rate and Attrition&quot;) + labs(x = &#39;Hourly Rate&#39;, y  = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/hourly%20rate-1.png" width="672" /></p>
+<pre class="r"><code>### internal, super significant
+total &lt;- work %&gt;% select(attrition, job_involvement) %&gt;% group_by(job_involvement) %&gt;% arrange(job_involvement) %&gt;% count(job_involvement) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(job_involvement, attrition) %&gt;% group_by(job_involvement) %&gt;% arrange(job_involvement) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(job_involvement) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   job_involvement   n
+## 1               1  47
+## 2               2 228
+## 3               3 514
+## 4               4  81</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   job_involvement yes
+## 1               1  22
+## 2               2  44
+## 3               3  67
+## 4               4   7</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;job_involvement&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join</code></pre>
+<pre><code>##   job_involvement   n yes      perc
+## 1               1  47  22 46.808511
+## 2               2 228  44 19.298246
+## 3               3 514  67 13.035019
+## 4               4  81   7  8.641975</code></pre>
+<pre class="r"><code>join %&gt;% ggplot(aes(x = job_involvement, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Job Involvement and Attrition&quot;) + labs(x = &quot;Job Involvement&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20involvement-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, job_level) %&gt;% group_by(job_level) %&gt;% arrange(job_level) %&gt;% count(job_level) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(job_level, attrition) %&gt;% group_by(job_level) %&gt;% arrange(job_level) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(job_level) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   job_level   n
+## 1         1 329
+## 2         2 312
+## 3         3 132
+## 4         4  60
+## 5         5  37</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   job_level yes
+## 1         1  86
+## 2         2  30
+## 3         3  17
+## 4         4   3
+## 5         5   4</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;job_level&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = job_level, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Job Level and Attrition&quot;) + labs(x = &quot;Job Level&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20level-1.png" width="672" /></p>
+<pre class="r"><code>### internal, worth investigating
+total &lt;- work %&gt;% select(attrition, job_role) %&gt;% group_by(job_role) %&gt;% arrange(job_role) %&gt;% count(job_role) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(job_role, attrition) %&gt;% group_by(job_role) %&gt;% arrange(job_role) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(job_role) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##                    job_role   n
+## 1 healthcare_representative  76
+## 2           human_resources  27
+## 3     laboratory_technician 153
+## 4                   manager  51
+## 5    manufacturing_director  87
+## 6         research_director  51</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##                    job_role yes
+## 1 healthcare_representative   8
+## 2           human_resources   6
+## 3     laboratory_technician  30
+## 4                   manager   4
+## 5    manufacturing_director   2
+## 6         research_director   1
+## 7        research_scientist  32
+## 8           sales_executive  33
+## 9      sales_representative  24</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;job_role&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = job_role, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + coord_flip() + ggtitle(&quot;Job Role and Attrition&quot;) + labs(x = &quot;Job Role&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20role-1.png" width="672" /></p>
+<pre class="r"><code>### internal, worth exploring
+total &lt;- work %&gt;% select(attrition, job_satisfaction) %&gt;% group_by(job_satisfaction) %&gt;% arrange(job_satisfaction) %&gt;% count(job_satisfaction) %&gt;% as.data.frame()
+yes_count &lt;- work %&gt;% select(job_satisfaction, attrition) %&gt;% group_by(job_satisfaction) %&gt;% arrange(job_satisfaction) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(job_satisfaction) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+head(total)</code></pre>
+<pre><code>##   job_satisfaction   n
+## 1                1 179
+## 2                2 166
+## 3                3 254
+## 4                4 271</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   job_satisfaction yes
+## 1                1  38
+## 2                2  31
+## 3                3  43
+## 4                4  28</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;job_satisfaction&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = job_satisfaction, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Job Satisfaction and Attrition&quot;) + labs(x = &quot;Job Satisfaction&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20satisfaction-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, marital_status) %&gt;% group_by(marital_status) %&gt;% arrange(marital_status) %&gt;% count(marital_status) %&gt;% as.data.frame()
+yes_count &lt;- work %&gt;% select(marital_status, attrition) %&gt;% group_by(marital_status) %&gt;% arrange(marital_status) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(marital_status) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+head(total)</code></pre>
+<pre><code>##   marital_status   n
+## 1       Divorced 191
+## 2        Married 410
+## 3         Single 269</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   marital_status yes
+## 1       Divorced  12
+## 2        Married  58
+## 3         Single  70</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;marital_status&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = marital_status, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Marital Status and Attrition&quot;) + labs(x = &quot;Marital Status&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/marital%20status-1.png" width="672" /></p>
+<pre class="r"><code>### internal, significant
+total &lt;- work %&gt;% select(attrition, monthly_income) %&gt;%
+  mutate(monthly_income = discretize(monthly_income, breaks = 6)) %&gt;% 
+  group_by(monthly_income) %&gt;% arrange(monthly_income) %&gt;% 
+  count(monthly_income) %&gt;% as.data.frame()
+yes_count &lt;- work %&gt;% select(attrition, monthly_income) %&gt;% 
+  mutate(monthly_income = discretize(monthly_income, breaks = 6)) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% 
+  group_by(monthly_income) %&gt;% arrange(monthly_income) %&gt;% 
+  count(monthly_income) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+yes_count</code></pre>
+<pre><code>##        monthly_income yes
+## 1 [1.08e+03,2.51e+03)  49
+## 2 [2.51e+03,3.57e+03)  28
+## 3 [3.57e+03,4.95e+03)  20
+## 4 [4.95e+03,6.48e+03)  14
+## 5 [6.48e+03,1.04e+04)  19
+## 6    [1.04e+04,2e+04]  10</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;monthly_income&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join</code></pre>
+<pre><code>##        monthly_income   n yes      perc
+## 1 [1.08e+03,2.51e+03) 145  49 33.793103
+## 2 [2.51e+03,3.57e+03) 145  28 19.310345
+## 3 [3.57e+03,4.95e+03) 145  20 13.793103
+## 4 [4.95e+03,6.48e+03) 145  14  9.655172
+## 5 [6.48e+03,1.04e+04) 145  19 13.103448
+## 6    [1.04e+04,2e+04] 145  10  6.896552</code></pre>
+<pre class="r"><code>join %&gt;% ggplot(aes(x = monthly_income, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + coord_flip() + ggtitle(&quot;Income and Attrition&quot;) + labs(x = &quot;Income&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/income-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, num_companies_worked) %&gt;% group_by(num_companies_worked) %&gt;% arrange(num_companies_worked) %&gt;% count(num_companies_worked) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(num_companies_worked, attrition) %&gt;% group_by(num_companies_worked) %&gt;% arrange(num_companies_worked) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(num_companies_worked) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   num_companies_worked   n
+## 1                    0 111
+## 2                    1 320
+## 3                    2  74
+## 4                    3  91
+## 5                    4  85
+## 6                    5  43</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##    num_companies_worked yes
+## 1                     0  11
+## 2                     1  60
+## 3                     2   9
+## 4                     3   9
+## 5                     4   7
+## 6                     5  11
+## 7                     6   9
+## 8                     7  11
+## 9                     8   5
+## 10                    9   8</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;num_companies_worked&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = num_companies_worked, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Number of Companies Worked and Attrition&quot;) + labs(x = &quot;Number of Companies Worked&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/num%20of%20companies%20worked-1.png" width="672" /></p>
+<pre class="r"><code>### internal, significant
+total &lt;- work %&gt;% select(attrition, over_time) %&gt;% group_by(over_time) %&gt;% arrange(over_time) %&gt;% count(over_time) %&gt;% as.data.frame()
+yes_count &lt;- work %&gt;% select(over_time, attrition) %&gt;% group_by(over_time) %&gt;% arrange(over_time) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(over_time) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+head(total)</code></pre>
+<pre><code>##   over_time   n
+## 1        No 618
+## 2       Yes 252</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   over_time yes
+## 1        No  60
+## 2       Yes  80</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;over_time&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join</code></pre>
+<pre><code>##   over_time   n yes      perc
+## 1        No 618  60  9.708738
+## 2       Yes 252  80 31.746032</code></pre>
+<pre class="r"><code>join %&gt;% ggplot(aes(x = over_time, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Over Time and Attrition&quot;) + labs(x = &quot;Over Time&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/over%20time-1.png" width="672" /></p>
+<pre class="r"><code>### internal, significant
+total &lt;- work %&gt;% select(attrition, percent_salary_hike) %&gt;% group_by(percent_salary_hike) %&gt;% arrange(percent_salary_hike) %&gt;% count(percent_salary_hike) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(percent_salary_hike, attrition) %&gt;% group_by(percent_salary_hike) %&gt;% arrange(percent_salary_hike) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(percent_salary_hike) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   percent_salary_hike   n
+## 1                  11 126
+## 2                  12 119
+## 3                  13 123
+## 4                  14 120
+## 5                  15  54
+## 6                  16  43</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##    percent_salary_hike yes
+## 1                   11  24
+## 2                   12  17
+## 3                   13  21
+## 4                   14  13
+## 5                   15   8
+## 6                   16  10
+## 7                   17  10
+## 8                   18   9
+## 9                   19   5
+## 10                  20   3
+## 11                  21   2
+## 12                  22   7
+## 13                  23   5
+## 14                  24   5
+## 15                  25   1</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;percent_salary_hike&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = percent_salary_hike, y = perc)) + geom_bar(stat = &#39;identity&#39;,  fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Percent Salary Hike and Attrition&quot;) + labs(x = &quot;Percent Salary Hike&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/percent%20salary%20hike-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, performance_rating) %&gt;% group_by(performance_rating) %&gt;% arrange(performance_rating) %&gt;% count(performance_rating) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(performance_rating, attrition) %&gt;% group_by(performance_rating) %&gt;% arrange(performance_rating) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(performance_rating) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   performance_rating   n
+## 1                  3 738
+## 2                  4 132</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   performance_rating yes
+## 1                  3 117
+## 2                  4  23</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;performance_rating&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = performance_rating, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) +  theme_minimal() + ggtitle(&quot;Performance Rating and Attrition&quot;) + labs(x = &quot;Performance Rating&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/performance%20rating-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, relationship_satisfaction) %&gt;% group_by(relationship_satisfaction) %&gt;% arrange(relationship_satisfaction) %&gt;% count(relationship_satisfaction) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(relationship_satisfaction, attrition) %&gt;% group_by(relationship_satisfaction) %&gt;% arrange(relationship_satisfaction) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(relationship_satisfaction) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   relationship_satisfaction   n
+## 1                         1 174
+## 2                         2 171
+## 3                         3 261
+## 4                         4 264</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   relationship_satisfaction yes
+## 1                         1  35
+## 2                         2  27
+## 3                         3  36
+## 4                         4  42</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;relationship_satisfaction&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = relationship_satisfaction, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Relationship Satisfaction and Attrition&quot;) + labs(x = &quot;Relationship Satisfaction&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/relationship%20satisfaction-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, stock_option_level) %&gt;% group_by(stock_option_level) %&gt;% arrange(stock_option_level) %&gt;% count(stock_option_level) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(stock_option_level, attrition) %&gt;% group_by(stock_option_level) %&gt;% arrange(stock_option_level) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(stock_option_level) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   stock_option_level   n
+## 1                  0 379
+## 2                  1 355
+## 3                  2  81
+## 4                  3  55</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   stock_option_level yes
+## 1                  0  98
+## 2                  1  27
+## 3                  2   3
+## 4                  3  12</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;stock_option_level&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = stock_option_level, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Stock Option Level and Attrition&quot;) + labs(x = &quot;Stock Option Level&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/stock%20option%20level-1.png" width="672" /></p>
+<pre class="r"><code>### external, worth exploring
+total &lt;- work %&gt;% select(attrition, total_working_years) %&gt;% mutate(total_working_years = discretize(total_working_years, method = &#39;interval&#39;, breaks = 5)) %&gt;% group_by(total_working_years) %&gt;% arrange(total_working_years) %&gt;% count(total_working_years) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(total_working_years, attrition) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% 
+  mutate(total_working_years = discretize(total_working_years, method = &#39;interval&#39;, breaks = 5)) %&gt;% group_by(total_working_years) %&gt;% arrange(total_working_years) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% dplyr::count(total_working_years) %&gt;% dplyr::rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   total_working_years   n
+## 1               [0,8) 305
+## 2              [8,16) 370
+## 3             [16,24) 129
+## 4             [24,32)  47
+## 5             [32,40]  19</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   total_working_years yes
+## 1               [0,8)  79
+## 2              [8,16)  42
+## 3             [16,24)  13
+## 4             [24,32)   4
+## 5             [32,40]   2</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;total_working_years&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = total_working_years, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Total Working Years and Attrition&quot;) + labs(x = &quot;Total Working Years&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/total%20working%20years-1.png" width="672" /></p>
+<pre class="r"><code>### internal?, not significant
+total &lt;- work %&gt;% select(attrition, training_times_last_year) %&gt;% group_by(training_times_last_year) %&gt;% arrange(training_times_last_year) %&gt;% count(training_times_last_year) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(training_times_last_year, attrition) %&gt;% group_by(training_times_last_year) %&gt;% arrange(training_times_last_year) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(training_times_last_year) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   training_times_last_year   n
+## 1                        0  30
+## 2                        1  39
+## 3                        2 309
+## 4                        3 308
+## 5                        4  73
+## 6                        5  75</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   training_times_last_year yes
+## 1                        0   8
+## 2                        1   5
+## 3                        2  57
+## 4                        3  43
+## 5                        4  16
+## 6                        5   7
+## 7                        6   4</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;training_times_last_year&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = training_times_last_year, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Training Times Last Year and Attrition&quot;) + labs(x = &quot;Training Times Last Year&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/training%20times%20last%20year-1.png" width="672" /></p>
+<pre class="r"><code>### internal/external, significant
+total &lt;- work %&gt;% select(attrition, work_life_balance) %&gt;% group_by(work_life_balance) %&gt;% arrange(work_life_balance) %&gt;% count(work_life_balance) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(work_life_balance, attrition) %&gt;% group_by(work_life_balance) %&gt;% arrange(work_life_balance) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% count(work_life_balance) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   work_life_balance   n
+## 1                 1  48
+## 2                 2 192
+## 3                 3 532
+## 4                 4  98</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   work_life_balance yes
+## 1                 1  17
+## 2                 2  30
+## 3                 3  80
+## 4                 4  13</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;work_life_balance&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = work_life_balance, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Work Life Balance and Attrition&quot;) + labs(x = &quot;Work Life Balance&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/work%20life%20balance-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, years_at_company) %&gt;% mutate(years_at_company = discretize(years_at_company, method = &#39;interval&#39;, breaks = 4)) %&gt;% group_by(years_at_company) %&gt;% arrange(years_at_company) %&gt;% count(years_at_company) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(years_at_company, attrition) %&gt;% mutate(years_at_company = discretize(years_at_company, method = &#39;interval&#39;, breaks = 4)) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% group_by(years_at_company) %&gt;% arrange(years_at_company) %&gt;% count(years_at_company) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   years_at_company   n
+## 1           [0,10) 644
+## 2          [10,20) 175
+## 3          [20,30)  42
+## 4          [30,40]   9</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   years_at_company yes
+## 1           [0,10) 114
+## 2          [10,20)  21
+## 3          [20,30)   3
+## 4          [30,40]   2</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;years_at_company&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = years_at_company, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Years at Company and Attrition&quot;) + labs(x = &quot;Years at Company&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/years%20at%20company-1.png" width="672" /></p>
+<pre class="r"><code>### external, not significant
+total &lt;- work %&gt;% select(attrition, years_in_current_role) %&gt;% mutate(years_in_current_role = discretize(years_in_current_role, method = &#39;interval&#39;, breaks = 6)) %&gt;% group_by(years_in_current_role) %&gt;% arrange(years_in_current_role) %&gt;% count(years_in_current_role) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(years_in_current_role, attrition) %&gt;% mutate(years_in_current_role = discretize(years_in_current_role, method = &#39;interval&#39;, breaks = 6)) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% group_by(years_in_current_role) %&gt;% arrange(years_in_current_role) %&gt;% count(years_in_current_role) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   years_in_current_role   n
+## 1                 [0,3) 412
+## 2                 [3,6) 147
+## 3                 [6,9) 209
+## 4                [9,12)  69
+## 5               [12,15)  23
+## 6               [15,18]  10</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   years_in_current_role yes
+## 1                 [0,3)  93
+## 2                 [3,6)  15
+## 3                 [6,9)  23
+## 4                [9,12)   5
+## 5               [12,15)   3
+## 6               [15,18]   1</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;years_in_current_role&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = years_in_current_role, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill =  &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Years in Current Role and Attrition&quot;) + labs(x = &quot;Years in Current Role&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/years%20in%20current%20role-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, years_since_last_promotion) %&gt;% mutate(years_since_last_promotion = discretize(years_since_last_promotion, method = &#39;interval&#39;, breaks = 5)) %&gt;% group_by(years_since_last_promotion) %&gt;% arrange(years_since_last_promotion) %&gt;% count(years_since_last_promotion) %&gt;% as.data.frame()
+
+yes_count &lt;- work %&gt;% select(years_since_last_promotion, attrition) %&gt;% mutate(years_since_last_promotion = discretize(years_since_last_promotion, method = &#39;interval&#39;, breaks = 5)) %&gt;% filter(attrition == &quot;1&quot;) %&gt;% group_by(years_since_last_promotion) %&gt;% arrange(years_since_last_promotion) %&gt;% count(years_since_last_promotion) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+
+head(total)</code></pre>
+<pre><code>##   years_since_last_promotion   n
+## 1                      [0,3) 650
+## 2                      [3,6)  94
+## 3                      [6,9)  76
+## 4                     [9,12)  27
+## 5                    [12,15]  23</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   years_since_last_promotion yes
+## 1                      [0,3) 108
+## 2                      [3,6)   9
+## 3                      [6,9)  13
+## 4                     [9,12)   6
+## 5                    [12,15]   4</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;years_since_last_promotion&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = years_since_last_promotion, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Years Since Last Promotion&quot;) + labs(x = &quot;Years Since Last Promotion&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/years%20since%20last%20promotion-1.png" width="672" /></p>
+<pre class="r"><code>### internal, not significant
+total &lt;- work %&gt;% select(attrition, years_with_curr_manager) %&gt;% 
+  mutate(years_with_curr_manager = discretize(years_with_curr_manager, method = &#39;interval&#39;, breaks = 5)) %&gt;% 
+  group_by(years_with_curr_manager) %&gt;% arrange(years_with_curr_manager) %&gt;% count(years_with_curr_manager) %&gt;% as.data.frame()
+yes_count &lt;- work %&gt;% select(years_with_curr_manager, attrition) %&gt;% 
+  mutate(years_with_curr_manager = discretize(years_with_curr_manager, method = &#39;interval&#39;, breaks = 5)) %&gt;% 
+  filter(attrition == &quot;1&quot;) %&gt;% group_by(years_with_curr_manager) %&gt;% arrange(years_with_curr_manager) %&gt;% 
+  count(years_with_curr_manager) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+head(total)</code></pre>
+<pre><code>##   years_with_curr_manager   n
+## 1                 [0,3.4) 484
+## 2               [3.4,6.8)  85
+## 3              [6.8,10.2) 261
+## 4             [10.2,13.6)  31
+## 5               [13.6,17]   9</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##   years_with_curr_manager yes
+## 1                 [0,3.4)  95
+## 2               [3.4,6.8)  11
+## 3              [6.8,10.2)  32
+## 4             [10.2,13.6)   1
+## 5               [13.6,17]   1</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &quot;years_with_curr_manager&quot;)
+join &lt;- join %&gt;% mutate(perc = (yes/n)*100)
+join %&gt;% ggplot(aes(x = years_with_curr_manager, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + ggtitle(&quot;Years with Current Manager and Attrition&quot;) + labs(x = &quot;Years With Current Manager&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/yrs%20with%20current%20manager-1.png" width="672" /></p>
+</div>
+</div>
+<div id="i.-top-factors-contributing-to-attrition" class="section level2">
+<h2>I. Top Factors Contributing to Attrition</h2>
+<div id="significance" class="section level3">
+<h3>Significance:</h3>
+<div id="setting-significance-at-30-of-attrition-in-at-least-one-level-if-factor" class="section level4">
+<h4>Setting significance at &gt;30% of attrition in at least one level (if factor)</h4>
+</div>
+</div>
+<div id="internal" class="section level3">
+<h3>Internal</h3>
+<div id="worklife-balance" class="section level4">
+<h4>- Work/Life Balance</h4>
+</div>
+<div id="percent-salary-hike" class="section level4">
+<h4>- Percent Salary Hike</h4>
+</div>
+<div id="overtime" class="section level4">
+<h4>- Overtime</h4>
+</div>
+<div id="income" class="section level4">
+<h4>- Income</h4>
+</div>
+<div id="job-involvement" class="section level4">
+<h4>- Job Involvement</h4>
+</div>
+</div>
+<div id="worth-exploring" class="section level3">
+<h3>Worth Exploring:</h3>
+<div id="job-satisfaction" class="section level4">
+<h4>- Job Satisfaction</h4>
+</div>
+<div id="job-role" class="section level4">
+<h4>- Job Role</h4>
+</div>
+</div>
+<div id="external" class="section level3">
+<h3>External</h3>
+<div id="worklife-balance-1" class="section level4">
+<h4>- Work/Life Balance</h4>
+</div>
+<div id="distance-from-home" class="section level4">
+<h4>- Distance from Home</h4>
+</div>
+<div id="age" class="section level4">
+<h4>- Age</h4>
+</div>
+</div>
+<div id="worth-exploring-1" class="section level3">
+<h3>Worth Exploring:</h3>
+<div id="total-working-years" class="section level4">
+<h4>- Total Working Years</h4>
+</div>
+</div>
+<div id="model-comparison" class="section level3">
+<h3>Model Comparison:</h3>
+<div id="used-regression-modeling-to-examine-those-variables-using-aic-model-selection-to-choose-top-3-contributors-to-attrition." class="section level4">
+<h4>Used regression modeling to examine those variables using AIC model selection to choose top 3 contributors to attrition.</h4>
+</div>
+<div id="made-all-combinations-and-interactions-for-3-variables-to-predict-attrition" class="section level4">
+<h4>Made all combinations and interactions for 3 variables to predict attrition</h4>
+<pre class="r"><code>perc_sal_hike.mod &lt;- glm(attrition ~ percent_salary_hike, data = work, family = &#39;binomial&#39;)
+over_time.mod &lt;- glm(attrition ~ factor(over_time), data = work, family = &#39;binomial&#39;)
+monthly_inc.mod &lt;- glm(attrition ~ monthly_income, data = work, family = &#39;binomial&#39;)
+job_inv.mod &lt;- glm(attrition ~ factor(job_involvement), data = work, family = &#39;binomial&#39;)
+wlb.mod &lt;- glm(attrition ~ factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+psh.ot.mod &lt;- glm(attrition ~ percent_salary_hike +  factor(over_time), data = work, family = &#39;binomial&#39;)
+psh.mi.mod &lt;- glm(attrition ~ percent_salary_hike +  monthly_income, data = work, family = &#39;binomial&#39;)
+psh.ji.mod &lt;- glm(attrition ~ percent_salary_hike +  factor(job_involvement), data = work, family = &#39;binomial&#39;)
+psh.wlb.mod &lt;- psh.ot.mod &lt;- glm(attrition ~ percent_salary_hike + factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+ot.mi.mod &lt;- glm(attrition ~ factor(over_time) + monthly_income, data = work, family = &#39;binomial&#39;)
+ot.ji.mod &lt;- glm(attrition ~ factor(over_time) + factor(job_involvement), data = work, family = &#39;binomial&#39;)
+ot.wlb.mod &lt;- glm(attrition ~ factor(over_time) + factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+mi.ji.mod &lt;- glm(attrition ~ monthly_income + factor(job_involvement), data = work, family = &#39;binomial&#39;)
+mi.wlb.mod &lt;- glm(attrition ~ monthly_income + factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+ji.wlb.mod &lt;- glm(attrition ~ factor(job_involvement) + factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+mi.ot.int.mod &lt;- glm(attrition ~ factor(over_time)*monthly_income, data = work, family = &#39;binomial&#39;)
+mi.ji.int.mod &lt;- glm(attrition ~ factor(over_time)*factor(job_involvement), data = work, family = &#39;binomial&#39;)
+mi.wlb.int.mod &lt;- glm(attrition ~ monthly_income*factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+ot.ji.wlb.mod &lt;- glm(attrition ~ factor(over_time) + factor(job_involvement) + factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+ot.ji.wlb.int.mod &lt;- glm(attrition ~ factor(over_time) + factor(job_involvement)*factor(work_life_balance), data = work, family = &#39;binomial&#39;)
+ot.wlb.int.ji.mod &lt;- glm(attrition ~ factor(over_time)*factor(work_life_balance) + factor(job_involvement), data = work, family = &#39;binomial&#39;)
+ot.ji.mi.mod &lt;- glm(attrition ~ factor(over_time) + factor(job_involvement) + monthly_income, data = work, family = &#39;binomial&#39;)
+ot.ji.mi.int.mod &lt;- glm(attrition ~ factor(over_time) + factor(job_involvement)*monthly_income, data = work, family = &#39;binomial&#39;)
+ot.ji.int.mi.mod &lt;- glm(attrition ~ factor(over_time)*factor(job_involvement) + monthly_income, data = work, family = &#39;binomial&#39;)
+
+
+models &lt;- list(over_time.mod, monthly_inc.mod, job_inv.mod, wlb.mod, psh.ji.mod, ot.mi.mod, ot.ji.mod, ot.wlb.mod, mi.ji.mod, mi.wlb.mod, ji.wlb.mod, mi.ot.int.mod, mi.ji.int.mod, mi.wlb.int.mod, ot.ji.wlb.mod, ot.ji.wlb.int.mod, ot.wlb.int.ji.mod, ot.ji.mi.mod, ot.ji.mi.int.mod, ot.ji.int.mi.mod)
+model.names &lt;- c(&#39;over_time.mod&#39;, &#39;monthly_inc.mod&#39;, &#39;job_inv.mod&#39;, &#39;wlb.mod&#39;, &#39;psh.ji.mod&#39;, &#39;ot.mi.mod&#39;, &#39;ot.ji.mod&#39;, &#39;ot.wlb.mod&#39;, &#39;mi.ji.mod&#39;, &#39;mi.wlb.mod&#39;, &#39;ji.wlb.mod&#39;, &#39;mi.ot.int.mod&#39;, &#39;mi.ji.int.mod&#39;, &#39;mi.wlb.int.mod&#39;, &#39;ot.ji.wlb.mod&#39;, &#39;ot.ji.wlb.int.mod&#39;, &#39;ot.wlb.int.ji.mod&#39;, &#39;ot.ji.mi.mod&#39;, &#39;ot.ji.mi.int.mod&#39;, &#39;ot.ji.int.mi.mod&#39;)
+aictab(cand.set = models, modnames = model.names)</code></pre>
+<pre><code>## 
+## Model selection based on AICc:
+## 
+##                    K   AICc Delta_AICc AICcWt Cum.Wt      LL
+## ot.ji.mi.mod       6 663.90       0.00   0.69   0.69 -325.90
+## ot.ji.mi.int.mod   9 666.01       2.11   0.24   0.93 -323.90
+## ot.ji.int.mi.mod   9 668.44       4.54   0.07   1.00 -325.11
+## ot.ji.wlb.mod      8 680.60      16.70   0.00   1.00 -332.22
+## ot.wlb.int.ji.mod 11 685.47      21.57   0.00   1.00 -331.58
+## ot.ji.mod          5 687.15      23.25   0.00   1.00 -338.54
+## mi.ot.int.mod      4 689.08      25.18   0.00   1.00 -340.52
+## ot.mi.mod          3 689.56      25.66   0.00   1.00 -341.77
+## ot.ji.wlb.int.mod 17 691.04      27.14   0.00   1.00 -328.16
+## mi.ji.int.mod      8 691.62      27.72   0.00   1.00 -337.73
+## ot.wlb.mod         5 706.19      42.29   0.00   1.00 -348.06
+## over_time.mod      2 712.82      48.92   0.00   1.00 -354.40
+## mi.ji.mod          5 718.54      54.64   0.00   1.00 -354.24
+## ji.wlb.mod         7 736.70      72.80   0.00   1.00 -361.29
+## mi.wlb.mod         5 741.24      77.34   0.00   1.00 -365.59
+## job_inv.mod        4 742.23      78.33   0.00   1.00 -367.09
+## mi.wlb.int.mod     8 742.68      78.78   0.00   1.00 -363.26
+## psh.ji.mod         5 744.01      80.10   0.00   1.00 -366.97
+## monthly_inc.mod    2 746.55      82.65   0.00   1.00 -371.27
+## wlb.mod            4 764.04     100.14   0.00   1.00 -378.00</code></pre>
+</div>
+</div>
+<div id="output-dictates-that-the-top-3-internal-variables-are" class="section level3">
+<h3>Output dictates that the top 3 internal variables are:<br />
+</h3>
+<div id="over_time" class="section level4">
+<h4>- over_time<br />
+</h4>
+</div>
+<div id="job_involvement" class="section level4">
+<h4>- job_involvement<br />
+</h4>
+</div>
+<div id="monthly_income" class="section level4">
+<h4>- monthly_income<br />
+</h4>
+</div>
+<div id="we-used-aic-model-selection-to-distinguish-among-a-set-of-possible-models-describing-therelationship-between-over-time-job-involvement-monthly-income-and-attrition.the-best-fit-modelcarrying-69-of-the-cumulative-model-weight-included-every-parameter-with-no-interaction-effects." class="section level4">
+<h4>We used AIC model selection to distinguish among a set of possible models describing the relationship between over time, job involvement, monthly income, and attrition.The best-fit model, carrying 69% of the cumulative model weight, included every parameter with no interaction effects.<br />
+</h4>
+</div>
+<div id="our-best-model-to-predict-attrition-thus-is-represented-in-the-formula" class="section level4">
+<h4>Our best model to predict attrition, thus is represented in the formula:<br />
+</h4>
+</div>
+<div id="attrition-β0-β1over_time-β2job_involvement-β3monthly_income" class="section level4">
+<h4>Attrition = β0 + β1(over_time) + β2(job_involvement) + β3(monthly_income)<br />
+</h4>
+<hr />
+</div>
+</div>
+</div>
+<div id="ii.-predicting-attrition" class="section level2">
+<h2>II. Predicting Attrition</h2>
+<div id="building-nb-model" class="section level3">
+<h3>Building NB model</h3>
+<div id="we-created-a-training-set-to-build-our-model-and-a-validation-set-that-we-will-use-in-the-end-to-judge-our-model." class="section level4">
+<h4>We created a training set to build our model and a validation set that we will use in the end to judge our model.</h4>
+<pre class="r"><code>set.seed(3)
+
+#We will create a for loop to evaluate or model across 100 iterations
+iterations = 300
+masterAcc = matrix(nrow = iterations)
+masterSens = matrix(nrow = iterations)
+masterSpec = matrix(nrow = iterations)
+splitPerc=.75
+
+for(j in 1:iterations)
+{
+  trainIndices = sample(1:dim(work)[1],round(splitPerc*dim(work)[1]))
+  train1 = work[trainIndices,]
+  test1 = work[-trainIndices,] 
+      
+  model = naiveBayes(attrition ~ 
+                       age+
+                       environment_satisfaction+
+                       job_satisfaction+
+                       distance_from_home+
+                       education_field+
+                       hourly_rate+
+                       job_involvement+
+                       job_level+
+                       job_role+
+                       marital_status+
+                       monthly_income+
+                       num_companies_worked+
+                       over_time+
+                       stock_option_level+
+                       total_working_years+
+                       training_times_last_year+
+                       work_life_balance+
+                       years_at_company+
+                       years_in_current_role+
+                       years_with_curr_manager, data = train1)
+  classifications = predict(model, test1)
+  actual = test1$attrition
+  CM = confusionMatrix(table(classifications,actual))
+  masterAcc[j] = CM$overall[1]
+  masterSens[j] = CM$byClass[1]
+  masterSpec[j] = CM$byClass[2]
+}
+
+MeanAcc = colMeans(masterAcc)
+MeanSens = colMeans(masterSens)
+MeanSpec = colMeans(masterSpec)
+
+MeanAcc</code></pre>
+<pre><code>## [1] 0.8070795</code></pre>
+<pre class="r"><code>MeanSens</code></pre>
+<pre><code>## [1] 0.8459928</code></pre>
+<pre class="r"><code>MeanSpec</code></pre>
+<pre><code>## [1] 0.6062724</code></pre>
+<pre class="r"><code>hist(masterAcc)</code></pre>
+<p><img src="Attrition_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>hist(masterSens)</code></pre>
+<p><img src="Attrition_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<pre class="r"><code>hist(masterSpec)</code></pre>
+<p><img src="Attrition_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
+<pre class="r"><code>sum(masterSpec &gt; 0.6)</code></pre>
+<pre><code>## [1] 162</code></pre>
+</div>
+<div id="our-model-predicting-attrition-has-a-mean-accuracy-of-80.7-mean-sensitivity-of-84.6-and-mean-specificity-of-60.63." class="section level4">
+<h4>Our model predicting attrition has a mean accuracy of 80.7%, mean sensitivity of 84.6% and mean specificity of 60.63%.</h4>
+</div>
+</div>
+</div>
+<div id="iii.-job-role-insights" class="section level2">
+<h2>III. Job Role Insights</h2>
+<div id="in-this-next-part-well-examine-job-role-specific-trends." class="section level4">
+<h4>In this next part, we’ll examine job role specific trends.</h4>
+</div>
+<div id="first-we-wanted-to-investigate-if-theres-any-disparity-with-respect-to-job-satisfaction-throughout-job-roles" class="section level4">
+<h4>First, we wanted to investigate if there’s any disparity with respect to job satisfaction throughout job roles</h4>
+<pre class="r"><code>### job satisfaction by role
+js &lt;- work %&gt;% select(job_role, job_satisfaction) %&gt;% group_by(job_role) %&gt;% mutate(job_role = factor(job_role)) %&gt;% summarize(mean(job_satisfaction)) %&gt;% as.data.frame() %&gt;% rename(average_job_satisfaction = &#39;mean(job_satisfaction)&#39;)
+js</code></pre>
+<pre><code>##                    job_role average_job_satisfaction
+## 1 healthcare_representative                 2.828947
+## 2           human_resources                 2.555556
+## 3     laboratory_technician                 2.686275
+## 4                   manager                 2.509804
+## 5    manufacturing_director                 2.724138
+## 6         research_director                 2.490196
+## 7        research_scientist                 2.802326
+## 8           sales_executive                 2.725000
+## 9      sales_representative                 2.698113</code></pre>
+<pre class="r"><code>js %&gt;% ggplot(aes(x = job_role, y = average_job_satisfaction)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + coord_flip() + theme_minimal() + ggtitle(&quot;Mean Job Satisfaction by Job Role&quot;) + labs(x = &quot;Job Role&quot;, y  = &quot;Average Job Satisfaction&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20role%20insight%20-%20part%201-1.png" width="672" /></p>
+</div>
+<div id="analysis" class="section level3">
+<h3>Analysis:</h3>
+<div id="through-visual-inspection-from-the-graph-above-there-doesnt-appear-to-be-a-noticeable-difference-in-job-satisfaction-by-job-role.-notwithstanding-healthcare-representatives-had-the-highest-average-job-satisfaction-with-2.83-and-research-director-had-the-lowest-with-2.49.-although-there-wasnt-a-notable-difference-between-job-roles-it-is-always-recommendable-to-increase-average-job-satisfaction-across-all-job-roles." class="section level4">
+<h4>Through visual inspection from the graph above, there doesn’t appear to be a noticeable difference in job satisfaction by job role. Notwithstanding, healthcare representatives had the highest average job satisfaction with 2.83 and research director had the lowest with 2.49. Although there wasn’t a notable difference between job roles, it is always recommendable to increase average job satisfaction across all job roles.</h4>
+<hr />
+</div>
+<div id="next-as-we-established-earlier-over-time-is-a-top-contributing-factor-to-attrition-so-we-wanted-to-examine-how-over-time-percentages-are-represented-across-job-roles." class="section level4">
+<h4>Next, as we established earlier, “over time” is a top contributing factor to attrition, so we wanted to examine how “over time” percentages are represented across job roles.</h4>
+<pre class="r"><code>### Roles with highest amount of overtime
+total &lt;- work %&gt;% select(job_role, over_time) %&gt;% mutate(over_time = if_else(over_time == &quot;No&quot;, 0, 1)) %&gt;% 
+  group_by(job_role) %&gt;% arrange(job_role) %&gt;% count(job_role) %&gt;% as.data.frame()
+yes_count &lt;- work %&gt;% select(job_role, over_time) %&gt;% 
+  mutate(over_time = if_else(over_time == &quot;No&quot;, 0, 1)) %&gt;% 
+  group_by(job_role) %&gt;% arrange(job_role) %&gt;% filter(over_time == &quot;1&quot;) %&gt;% 
+  count(job_role) %&gt;% rename(yes = n) %&gt;% as.data.frame()
+total</code></pre>
+<pre><code>##                    job_role   n
+## 1 healthcare_representative  76
+## 2           human_resources  27
+## 3     laboratory_technician 153
+## 4                   manager  51
+## 5    manufacturing_director  87
+## 6         research_director  51
+## 7        research_scientist 172
+## 8           sales_executive 200
+## 9      sales_representative  53</code></pre>
+<pre class="r"><code>yes_count</code></pre>
+<pre><code>##                    job_role yes
+## 1 healthcare_representative  22
+## 2           human_resources   6
+## 3     laboratory_technician  33
+## 4                   manager  10
+## 5    manufacturing_director  23
+## 6         research_director  16
+## 7        research_scientist  65
+## 8           sales_executive  59
+## 9      sales_representative  18</code></pre>
+<pre class="r"><code>join &lt;- full_join(total, yes_count, by = &#39;job_role&#39;) %&gt;% mutate(perc = (yes/n)*100)
+join</code></pre>
+<pre><code>##                    job_role   n yes     perc
+## 1 healthcare_representative  76  22 28.94737
+## 2           human_resources  27   6 22.22222
+## 3     laboratory_technician 153  33 21.56863
+## 4                   manager  51  10 19.60784
+## 5    manufacturing_director  87  23 26.43678
+## 6         research_director  51  16 31.37255
+## 7        research_scientist 172  65 37.79070
+## 8           sales_executive 200  59 29.50000
+## 9      sales_representative  53  18 33.96226</code></pre>
+<pre class="r"><code>join %&gt;% ggplot(aes(x = job_role, y = perc)) + geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + theme_minimal() + coord_flip() + ggtitle(&quot;Percent of Over Time by Job Role&quot;) + labs(x = &quot;Job Role&quot;, y = &quot;Percent&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20role%20insight%20-%20part%202-1.png" width="672" /></p>
+</div>
+</div>
+<div id="analysis-1" class="section level3">
+<h3>Analysis:</h3>
+<div id="in-this-case-there-is-a-notable-difference-between-job-roles-in-over-time.-manager-role-had-the-lowest-percentage-of-over-time-with-19.6-and-research-scientist-had-the-highest-percentage-of-over-time-with-37.8.-in-the-interest-of-lowering-attrition-rates-especially-among-those-roles-with-higher-percentages-it-is-recommendable-to-limit-over-time." class="section level4">
+<h4>In this case, there is a notable difference between job roles in over time. Manager role had the lowest percentage of over time with 19.6% and research scientist had the highest percentage of over time with 37.8%. In the interest of lowering attrition rates, especially among those roles with higher percentages, it is recommendable to limit over time.</h4>
+<hr />
+</div>
+<div id="we-also-examined-elements-of-gender-parity-with-respect-to-job-roles.-first-we-looked-at-the-distribution-of-monthly-income-between-genders-in-each-job-role.-then-we-examined-job-role-occupancy-by-gender." class="section level4">
+<h4>We also examined elements of gender parity with respect to job roles. First, we looked at the distribution of monthly income between genders in each job role. Then, we examined job role occupancy by gender.</h4>
+<pre class="r"><code>### Gender parity t-test with respect to monthly income
+
+mon_inc_male &lt;- work %&gt;% select(monthly_income, gender) %&gt;% filter(gender == &quot;Male&quot;)
+mon_inc_female &lt;- work %&gt;% select(monthly_income, gender) %&gt;% filter(gender == &quot;Female&quot;)
+t.test(mon_inc_male$monthly_income, mon_inc_female$monthly_income)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  mon_inc_male$monthly_income and mon_inc_female$monthly_income
+## t = -1.6207, df = 747.5, p-value = 0.1055
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1140.8560   109.0107
+## sample estimates:
+## mean of x mean of y 
+##  6180.337  6696.260</code></pre>
+</div>
+<div id="first-we-ran-a-t-test-to-establish-whether-across-all-job-roles-there-was-any-difference-in-monthly-income-between-male-and-female-employees.-at-a-0.05-significance-level-there-is-not-enough-evidence-to-suggest-that-there-is-any-difference-between-male-and-female-employees-with-respect-to-monthly-income-p-value-0.1055-welch-two-sample-t-test." class="section level4">
+<h4>First, we ran a t-test to establish whether across all job roles there was any difference in monthly income between male and female employees. At a 0.05 significance level, there is not enough evidence to suggest that there is any difference between male and female employees with respect to monthly income (p-value = 0.1055, Welch Two sample t-test).</h4>
+<pre class="r"><code>work %&gt;% select(gender, monthly_income, job_role) %&gt;% group_by(job_role, gender) %&gt;% arrange(job_role) %&gt;% summarise(mean(monthly_income))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;job_role&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 18 × 3
+## # Groups:   job_role [9]
+##    job_role                  gender `mean(monthly_income)`
+##    &lt;fct&gt;                     &lt;fct&gt;                   &lt;dbl&gt;
+##  1 healthcare_representative Female                  7514.
+##  2 healthcare_representative Male                    7375.
+##  3 human_resources           Female                  3383.
+##  4 human_resources           Male                    3236.
+##  5 laboratory_technician     Female                  3384.
+##  6 laboratory_technician     Male                    3141.
+##  7 manager                   Female                 17156.
+##  8 manager                   Male                   17237.
+##  9 manufacturing_director    Female                  7452.
+## 10 manufacturing_director    Male                    7558.
+## 11 research_director         Female                 14874.
+## 12 research_director         Male                   16470.
+## 13 research_scientist        Female                  3411.
+## 14 research_scientist        Male                    3167.
+## 15 sales_executive           Female                  6795.
+## 16 sales_executive           Male                    6955.
+## 17 sales_representative      Female                  2676.
+## 18 sales_representative      Male                    2630.</code></pre>
+<pre class="r"><code>work %&gt;% select(gender, monthly_income, job_role) %&gt;% ggplot(aes(x = job_role, y = monthly_income, color = gender, fill = gender)) + geom_bar(stat = &#39;identity&#39;, alpha = 0.9, position = &#39;dodge&#39;) + coord_flip() + theme_minimal() + ggtitle(&quot;Monthly Income Distribution by Job Role and Gender&quot;) + labs(x = &quot;Job Role&quot;, y = &quot;Monthly Income&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20role%20instight%20-%20part%203aii-1.png" width="672" /></p>
+</div>
+</div>
+<div id="analysis-2" class="section level3">
+<h3>Analysis:</h3>
+<div id="when-adding-the-dimension-of-job-roles-this-finding-seems-to-hold-for-most-as-can-be-noted-in-the-graph.-research-directors-managers-manufacturing-directors-healthcare-representatives-have-almost-no-noticable-difference-in-monthly-income-between-male-and-female-employees.-human-resources-laboratory-technicians-and-sales-executives-show-a-slight-difference-with-male-employees-showing-lower-monthly-income.-for-sales-representatives-and-research-scientists-female-employees-showed-a-noticeably-lower-monthly-income-rate-than-their-male-counterparts." class="section level4">
+<h4>When adding the dimension of job roles, this finding seems to hold for most, as can be noted in the graph. Research Directors, Managers, Manufacturing Directors, Healthcare Representatives have almost no noticable difference in monthly income between male and female employees. Human Resources, Laboratory Technicians, and Sales Executives show a slight difference with male employees showing lower monthly income. For Sales Representatives and Research Scientists, female employees showed a noticeably lower monthly income rate than their male counterparts.</h4>
+<hr />
+</div>
+<div id="lastly-we-examined-the-proportion-of-employees-by-gender-in-each-role." class="section level4">
+<h4>Lastly, we examined the proportion of employees by gender in each role.</h4>
+<pre class="r"><code>### Gender parity with respect to job_role occupancy
+
+work %&gt;% select(gender, job_role) %&gt;% group_by(job_role) %&gt;% arrange(job_role) %&gt;% count(gender)</code></pre>
+<pre><code>## # A tibble: 18 × 3
+## # Groups:   job_role [9]
+##    job_role                  gender     n
+##    &lt;fct&gt;                     &lt;fct&gt;  &lt;int&gt;
+##  1 healthcare_representative Female    33
+##  2 healthcare_representative Male      43
+##  3 human_resources           Female     9
+##  4 human_resources           Male      18
+##  5 laboratory_technician     Female    51
+##  6 laboratory_technician     Male     102
+##  7 manager                   Female    25
+##  8 manager                   Male      26
+##  9 manufacturing_director    Female    43
+## 10 manufacturing_director    Male      44
+## 11 research_director         Female    23
+## 12 research_director         Male      28
+## 13 research_scientist        Female    65
+## 14 research_scientist        Male     107
+## 15 sales_executive           Female    79
+## 16 sales_executive           Male     121
+## 17 sales_representative      Female    26
+## 18 sales_representative      Male      27</code></pre>
+<pre class="r"><code>work %&gt;% select(gender, job_role) %&gt;% ggplot(aes(x = job_role, color = gender, fill = gender)) + geom_bar(position = &#39;dodge&#39;) + coord_flip() + theme_minimal() + ggtitle(&quot;Job Role Occupancy by Gender&quot;) + labs(x = &quot;Job Role&quot;, y = &quot;Count&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/job%20role%20instight%20-%20part%203b-1.png" width="672" /></p>
+</div>
+</div>
+<div id="analysis-3" class="section level3">
+<h3>Analysis:</h3>
+<div id="in-this-aspect-for-every-role-accounted-for-there-was-a-higher-share-of-male-employees-that-occupied-the-role-compared-to-female-employees.-some-roles-like-manager-and-manufacturing-director-showed-only-a-slight-difference-while-others-like-laboratory-technician-sales-executive-and-research-scientist-showed-an-mf-ratio-of-21-32-and-32-respectively." class="section level4">
+<h4>In this aspect, for every role accounted for, there was a higher share of male employees that occupied the role compared to female employees. Some roles, like Manager and Manufacturing Director, showed only a slight difference, while others like Laboratory Technician, Sales Executive, and Research Scientist, showed an M:F ratio of 2:1, 3:2, and 3:2, respectively.</h4>
+<hr />
+</div>
+</div>
+</div>
+<div id="iv.-predicting-monthly-income" class="section level2">
+<h2>IV. Predicting Monthly Income</h2>
+<div id="the-objective-in-this-part-of-the-analysis-is-to-create-a-model-that-best-predicts-monthly-income." class="section level4">
+<h4>The objective in this part of the analysis is to create a model that best predicts monthly income.</h4>
+</div>
+<div id="in-this-step-we-create-train-and-test-sets-to-get-a-more-accurate-metric-via-validation." class="section level4">
+<h4>In this step, we create train and test sets to get a more accurate metric via validation.</h4>
+<pre class="r"><code>### create base model with all variables
+fit = lm(monthly_income~., data = work)
+summary(fit)
+
+### create train and test data sets split at 75%
+set.seed(1)
+splitPerc = .75
+trainInd &lt;- sample(1:dim(work)[1],round(splitPerc * dim(work)[1]))
+work_model_Train = work[trainInd,]
+work_model_train2 &lt;- work_model_Train %&gt;% select(everything(), -monthly_income)
+work_model_Test = work[-trainInd,]
+work_model_test2 &lt;- work_model_Test %&gt;% select(everything(), -monthly_income)
+colnames(work_model_Test)</code></pre>
+</div>
+<div id="our-first-model-is-a-naive-bayes-model-which-is-highly-predicated-on-probability." class="section level4">
+<h4>Our first model is a Naive Bayes model which is highly predicated on probability.</h4>
+<pre class="r"><code>nb &lt;- naiveBayes(monthly_income~., data = work_model_Train)
+pred &lt;- predict(nb, work_model_test2)
+error &lt;- work_model_Test$monthly_income-as.numeric(pred)
+sqrt(mean(error^2))</code></pre>
+<pre><code>## [1] 7403.199</code></pre>
+</div>
+<div id="an-rmse-of-7897.961-is-too-high-for-what-were-looking-for-so-we-will-consider-alternative-models." class="section level4">
+<h4>An RMSE of 7897.961 is too high for what we’re looking for, so we will consider alternative models.</h4>
+</div>
+<div id="our-next-model-will-use-forward-selection-to-determine-the-most-important-variables." class="section level4">
+<h4>Our next model will use forward selection to determine the most important variables.</h4>
+<pre class="r"><code>ols_step_forward_p(fit, penter = 0.01, details = TRUE)</code></pre>
+<pre class="r"><code>forward_mod &lt;- lm(monthly_income~job_level +  job_role + total_working_years + business_travel, data = work)
+### evaluating model
+sqrt(mean(forward_mod$residuals^2))</code></pre>
+<pre><code>## [1] 1048.192</code></pre>
+<pre class="r"><code># ols_regress(forward_mod)
+ols_press(forward_mod)</code></pre>
+<pre><code>## [1] 983282198</code></pre>
+<pre class="r"><code>ols_aic(forward_mod)</code></pre>
+<pre><code>## [1] 14598.34</code></pre>
+<pre class="r"><code>ols_mallows_cp(forward_mod, fit)</code></pre>
+<pre><code>## [1] -4.608704</code></pre>
+<pre class="r"><code>### Adj. R-squared = 0.947
+### RMSE = 1048.192
+### PRESS: 983282198
+### AIC: 14598.34
+### Mallows Cp: -4.608704</code></pre>
+</div>
+<div id="the-forward-selection-faired-within-the-rmse-range-we-were-looking-for-and-will-be-a-strong-contender." class="section level4">
+<h4>The forward selection faired within the RMSE range we were looking for and will be a strong contender.</h4>
+</div>
+<div id="our-next-model-used-the-leaps-package-to-determine-the-best-subset-of-variables-given-a-desired-number." class="section level4">
+<h4>Our next model used the {leaps} package to determine the best subset of variables given a desired number.</h4>
+</div>
+<div id="in-order-to-receive-the-desired-model-we-created-a-function-that-outputs-the-best-model-per-the-function-given-an-n-number-of-variables." class="section level4">
+<h4>In order to receive the desired model, we created a function that outputs the best model, per the function, given an n number of variables.</h4>
+<pre class="r"><code>models &lt;- regsubsets(monthly_income~., data = work, nbest = 1, nvmax = NULL, force.in = NULL, force.out = NULL, method = &#39;exhaustive&#39;)
+
+### create function to use leaps package to select best predictor variables
+get_model_formula &lt;- function(id, object, outcome){
+  # get models data
+  models &lt;- summary(object)$which[id,-1]
+  # Get outcome variable
+  #form &lt;- as.formula(object$call[[2]])
+  #outcome &lt;- all.vars(form)[1]
+  # Get model predictors
+  predictors &lt;- names(which(models == TRUE))
+  predictors &lt;- paste(predictors, collapse = &quot;+&quot;)
+  # Build model formula
+  as.formula(paste0(outcome, &quot;~&quot;, predictors))
+}
+
+### output
+#summary(models)</code></pre>
+</div>
+<div id="here-we-examine-the-results-and-request-the-best-model-by-the-metrics-adj.-r2-mallows-cp-and-bic.-we-move-forward-with-creating-a-model-with-the-top-15-variables." class="section level4">
+<h4>Here we examine the results and request the best model by the metrics, Adj. R2, Mallow’s Cp, and BIC. We move forward with creating a model with the top 15 variables.</h4>
+<pre class="r"><code>### best performing models with 3 metrics
+sum_best &lt;- summary(models)
+data.frame(
+  Adj.R2 = which.max(sum_best$adjr2),
+  CP = which.min(sum_best$cp),
+  BIC = which.min(sum_best$bic)
+)</code></pre>
+<pre><code>##   Adj.R2 CP BIC
+## 1     19 16   6</code></pre>
+<pre class="r"><code>### using the function created above, we are able to identify the 15 top variables (w/factor levels that contribute to monthly income)
+get_model_formula(15, models, &quot;monthly_income&quot;)</code></pre>
+<pre><code>## monthly_income ~ business_travelTravel_Frequently + business_travelTravel_Rarely + 
+##     daily_rate + departmentresearch_and_development + genderMale + 
+##     job_level + job_rolelaboratory_technician + job_rolemanager + 
+##     job_roleresearch_director + job_roleresearch_scientist + 
+##     job_rolesales_executive + monthly_rate + total_working_years + 
+##     years_since_last_promotion + years_with_curr_manager
+## &lt;environment: 0x7fc4a81b92f0&gt;</code></pre>
+<pre class="r"><code>### using that output, we create this linear model to compare with the rest of the models
+leaps_mod_2 &lt;- lm(monthly_income ~ business_travel + daily_rate + department + gender
+                    + job_level + job_role + job_role  + 
+                    job_role + monthly_rate + total_working_years + 
+                    years_since_last_promotion + years_with_curr_manager, data = work)
+
+### evaluate model
+sqrt(mean(leaps_mod_2$residuals^2))</code></pre>
+<pre><code>## [1] 1036.523</code></pre>
+<pre class="r"><code># ols_regress(leaps_mod_2)
+ols_press(leaps_mod_2)</code></pre>
+<pre><code>## [1] 976097763</code></pre>
+<pre class="r"><code>ols_aic(leaps_mod_2)</code></pre>
+<pre><code>## [1] 14592.87</code></pre>
+<pre class="r"><code>ols_mallows_cp(leaps_mod_2, fit)</code></pre>
+<pre><code>## [1] -11.54697</code></pre>
+<pre class="r"><code>### rmse = 1036.523
+### adj. r2 = 0.948
+### PRESS: 976,097,763
+### AIC: 14592.87</code></pre>
+</div>
+<div id="the-model-responded-well-to-both-the-training-set-and-test-set." class="section level4">
+<h4>The model responded well to both the training set and test set.</h4>
+</div>
+<div id="our-last-model-similar-to-the-first-uses-stepwise-selection." class="section level4">
+<h4>Our last model, similar to the first, uses Stepwise selection.</h4>
+<pre class="r"><code>ols_step_both_p(fit, pent = 0.01, prem = 0.01, details = TRUE)
+stepwise_mod &lt;- lm(monthly_income~ job_level + job_role + total_working_years + business_travel, data = work)</code></pre>
+<pre class="r"><code>### evaluate model
+ols_press(leaps_mod_2)</code></pre>
+<pre><code>## [1] 976097763</code></pre>
+<pre class="r"><code>#ols_coll_diag(stepwise_mod)
+ols_aic(stepwise_mod)</code></pre>
+<pre><code>## [1] 14598.34</code></pre>
+<pre class="r"><code># ols_regress(stepwise_mod)
+sqrt(mean(stepwise_mod$residuals^2))</code></pre>
+<pre><code>## [1] 1048.192</code></pre>
+<pre class="r"><code>ols_mallows_cp(stepwise_mod, fit)</code></pre>
+<pre><code>## [1] -4.608704</code></pre>
+<pre class="r"><code>### PRESS: 983,282,198
+### RMSE: 1048.192
+### adj. r2 : .947
+### AIC: 14598.34
+
+### test stepwise model with training data
+stepwise_mod &lt;- lm(monthly_income~ job_level + job_role + total_working_years + business_travel, data = work_model_Train)
+pred &lt;- predict.lm(stepwise_mod, newdata = work_model_Test, type = &#39;response&#39;)
+error &lt;- work_model_Test$monthly_income-pred
+rmse &lt;- sqrt(mean(error^2))
+rmse</code></pre>
+<pre><code>## [1] 1081.88</code></pre>
+<pre class="r"><code>#### train/test RMSE: 1049.652
+ols_aic(stepwise_mod)</code></pre>
+<pre><code>## [1] 10940.83</code></pre>
+<pre class="r"><code>### AIC: 10951.16</code></pre>
+</div>
+<div id="not-surprisingly-the-model-of-this-selection-method-matched-the-results-of-the-first-selection-method-forward." class="section level4">
+<h4>Not surprisingly, the model of this selection method matched the results of the first selection method (forward).</h4>
+</div>
+<div id="in-order-to-determine-the-best-model-to-use-we-compare-them.-by-using-mallows-cp-adjusted-r2-aic-and-press-in-conjunction-as-metrics-we-can-feel-confident-in-our-model-selection-of-best-fit." class="section level4">
+<h4>In order to determine the best model to use, we compare them. By using Mallow’s Cp, adjusted r^2, AIC, and PRESS in conjunction as metrics, we can feel confident in our model selection of best fit.</h4>
+<pre class="r"><code>comp &lt;- tribble(
+  ~Name, ~MallowsCp, ~ adjr2, ~AIC, ~PRESS,
+  &quot;forward_mod&quot;, -4.608704, 0.947, 14598.34, 983282198,
+  &quot;leaps_mod_2&quot;, -11.54697, 0.948, 14592.87, 976097763,
+  &quot;stepwise_mod&quot;, -4.608704, 0.947, 14598.34, 983282198,
+)
+
+comp %&gt;% ggplot(aes(x = Name, y = MallowsCp))+
+  geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + 
+  theme_minimal() + ggtitle(&quot;Model Comparison (Mallows Cp)&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/Comparing%20models-1.png" width="672" /></p>
+<pre class="r"><code>### leaps_mod_2 has lowest Mallows Cp statistic, although it is uncommon to have all models with negative values in this metric
+
+comp %&gt;% ggplot(aes(x = Name, y = adjr2))+
+  geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + coord_cartesian(ylim = c(0.94, 0.95)) + 
+  theme_minimal() + ggtitle(&quot;Model Comparison (Adjusted R^2)&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/Comparing%20models-2.png" width="672" /></p>
+<pre class="r"><code>### leaps_mod_2 has highest adjusted r^2
+
+
+comp %&gt;% ggplot(aes(x = Name, y = AIC))+
+  geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + coord_cartesian(ylim = c(14575, 14600)) +
+  theme_minimal() + ggtitle(&quot;Model Comparison (AIC)&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/Comparing%20models-3.png" width="672" /></p>
+<pre class="r"><code>### leaps_mod_2 has lowest AIC
+
+
+comp %&gt;% ggplot(aes(x = Name, y = PRESS))+
+  geom_bar(stat = &#39;identity&#39;, fill = &#39;skyblue4&#39;) + coord_cartesian(ylim = c(975000000, 984000000)) + theme_minimal() + ggtitle(&quot;Model Comparison (PRESS)&quot;)</code></pre>
+<p><img src="Attrition_files/figure-html/Comparing%20models-4.png" width="672" /></p>
+<pre class="r"><code>### leaps_mod_2 has lowest CV PRESS statistic</code></pre>
+</div>
+<div id="by-all-metrics-leaps_mod_2-seems-to-be-the-best-fitted-model-in-predicting-monthly-income-so-we-will-use-this-model-for-predictions-in-the-no-salary-dataset." class="section level4">
+<h4>By all metrics, leaps_mod_2 seems to be the best fitted model in predicting monthly income, so we will use this model for predictions in the No Salary dataset.</h4>
+</div>
+<div id="in-order-to-maximize-accuracy-of-predictions-and-avoid-mishaps-the-validation-set-no-salary-should-be-formatted-in-exactly-the-same-way-as-the-dataset-the-model-was-created-and-tested-with." class="section level4">
+<h4>In order to maximize accuracy of predictions and avoid mishaps, the validation set (No Salary) should be formatted in exactly the same way as the dataset the model was created and tested with.</h4>
+<pre class="r"><code>### load no salary data set
+no_salary &lt;- read.csv(&quot;https://raw.githubusercontent.com/j-dominguez9/Case-Study-2/main/Code/Data/CaseStudy2CompSet%20No%20Salary.csv&quot;)
+
+### format data set to match training set
+no_salary &lt;- no_salary %&gt;% janitor::clean_names()
+no_salary$employee_count &lt;- NULL
+no_salary$over18 &lt;- NULL
+no_salary$standard_hours &lt;- NULL
+no_salary$employee_number &lt;- NULL
+
+#set relevant variables as factors
+is.factor(no_salary$over_time)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>no_salary$department &lt;- as.factor(no_salary$department)
+no_salary$education_field &lt;- as.factor(no_salary$education_field)
+no_salary$gender &lt;- as.factor(no_salary$gender)
+no_salary$marital_status &lt;- as.factor(no_salary$marital_status)
+no_salary$over_time &lt;- as.factor(no_salary$over_time)
+
+### clean level names of factor variables
+no_salary$education_field &lt;- recode_factor(no_salary$education_field,&quot;Human Resources&quot; = &#39;human_resources&#39;,&quot;Marketing&quot; = &#39;marketing&#39;, &quot;Medical&quot; = &#39;medical&#39;,&quot;Other&quot; = &#39;other&#39;, &quot;Technical Degree&quot; = &#39;technical_degree&#39;, &quot;Life Sciences&quot; = &#39;life_sciences&#39;)
+levels(no_salary$education_field)</code></pre>
+<pre><code>## [1] &quot;human_resources&quot;  &quot;marketing&quot;        &quot;medical&quot;          &quot;other&quot;           
+## [5] &quot;technical_degree&quot; &quot;life_sciences&quot;</code></pre>
+<pre class="r"><code>no_salary$department &lt;- recode_factor(no_salary$department, &quot;Human Resources&quot; = &#39;human_resources&#39;, &quot;Research &amp; Development&quot; = &#39;research_and_development&#39;, &quot;Sales&quot; = &#39;sales&#39;)
+levels(no_salary$department)</code></pre>
+<pre><code>## [1] &quot;human_resources&quot;          &quot;research_and_development&quot;
+## [3] &quot;sales&quot;</code></pre>
+<pre class="r"><code>no_salary$job_role &lt;- recode_factor(no_salary$job_role, &quot;Healthcare Representative&quot; = &#39;healthcare_representative&#39;, &quot;Human Resources&quot; = &#39;human_resources&#39;, &quot;Laboratory Technician&quot; = &#39;laboratory_technician&#39;, &quot;Manager&quot; = &#39;manager&#39;, &quot;Manufacturing Director&quot; = &#39;manufacturing_director&#39;, &quot;Research Director&quot; = &#39;research_director&#39;, &quot;Research Scientist&quot; = &#39;research_scientist&#39;, &quot;Sales Executive&quot; = &#39;sales_executive&#39;, &quot;Sales Representative&quot; = &#39;sales_representative&#39;)
+levels(no_salary$job_role)</code></pre>
+<pre><code>## [1] &quot;healthcare_representative&quot; &quot;human_resources&quot;          
+## [3] &quot;laboratory_technician&quot;     &quot;manager&quot;                  
+## [5] &quot;manufacturing_director&quot;    &quot;research_director&quot;        
+## [7] &quot;research_scientist&quot;        &quot;sales_executive&quot;          
+## [9] &quot;sales_representative&quot;</code></pre>
+<pre class="r"><code>### create predictions
+pred &lt;- predict.lm(leaps_mod_2, newdata = no_salary, type = &#39;response&#39;)
+no_sal_pred &lt;- data.frame(ID = no_salary$id, MonthlyIncome = pred)
+head(no_sal_pred)</code></pre>
+<pre><code>##    ID MonthlyIncome
+## 1 871      5819.174
+## 2 872      2509.365
+## 3 873     12169.448
+## 4 874      2181.052
+## 5 875      2471.547
+## 6 876      6268.624</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

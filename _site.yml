@@ -10,3 +10,5 @@ navbar:
       href: Iris.html
     - text: "Beers"
       href: Beers_Final.html
+    - text: "Attrition"
+      href: Attrition.html
